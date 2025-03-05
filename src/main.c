@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:21:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/05 16:25:15 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:57:12 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@
 - Gestion des redirections et fermeture des pipes dans redirections.c.
 */
 
+#include <stdio.h>
+
 int main(int argc, char *argv[], char *env[])
 {
-
+    if (!check_arguments(argc) || !check_file(argv[1], 1)
+        || !check_file(argv[4], 2))
+    {
+        return (FALSE);
+    }
+    find_command_path("test", getenv("PATH"));
 }

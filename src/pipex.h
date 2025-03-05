@@ -6,16 +6,22 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:17:13 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/05 16:21:21 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/05 19:34:00 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
-#define PIPEX_H
+# define PIPEX_H
+# define TRUE 1
+# define FALSE 0
+# include <stdio.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 /* Utils.c : parsing et vérification des arguments */
-void check_arguments(int argc);
-void check_file(char *filename, int mode);
+int check_arguments(int argc);
+int check_file(char *filename, int mode);
 char *find_command_path(char *cmd, char *env[]);
 void handle_error(char *message);
 

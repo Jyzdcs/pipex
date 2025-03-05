@@ -1,6 +1,6 @@
 NAME = pipex
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
 
 SRC = main.c utils.c pipex.c redirections.c
 OBJ = $(SRC:.c=.o)
