@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:41:11 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/06 17:58:19 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:07:35 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_arguments(int argc)
 {
 	if (argc != 5)
 	{
-		handle_error("Error: Nombre d'arguments different de 5");
+		handle_error("Error: Nombre d'arguments incorrect");
 		return (FALSE);
 	}
 	return (TRUE);
@@ -52,8 +52,7 @@ int	check_file(char *filename, int mode)
 /*Récupère le PATH dans l'environnement.*/
 char	*get_path(char *env[])
 {
-	char	*path;
-	int		i;
+	int	i;
 
 	i = 0;
 	while (env[i])
@@ -67,7 +66,7 @@ char	*get_path(char *env[])
 }
 
 /*Cherche le chemin d'une commande à partir du PATH.*/
-char	*find_command_path(char *cmd, char *env[])
+char	*find_cmd_path(char *cmd, char *env[])
 {
 	char	*path;
 	char	*cmd_path;
@@ -76,7 +75,11 @@ char	*find_command_path(char *cmd, char *env[])
 	int		i;
 
 	path = get_path(env);
+	if (!path)
+		return (NULL);
 	paths = ft_split(path, ':');
+	if (!paths)
+		return (NULL);
 	i = 0;
 	while (paths[i])
 	{
@@ -95,4 +98,20 @@ char	*find_command_path(char *cmd, char *env[])
 	free_all_ptr((void **)paths);
 	handle_error("Error: Command not found");
 	return (NULL);
+}
+
+/* Extrait le nom de la commande (premier mot avant un espace) */
+char	*extract_cmd_name(char *cmd)
+{
+	int		i;
+	char	*cmd_name;
+
+	i = 0;
+	while (cmd[i] && cmd[i] != ' ')
+		i++;
+	cmd_name = (char *)malloc(sizeof(char) * (i + 1));
+	if (!cmd_name)
+		return (NULL);
+	ft_strlcpy(cmd_name, cmd, i + 1);
+	return (cmd_name);
 }

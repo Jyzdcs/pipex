@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:21:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/06 17:57:00 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:07:38 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,16 @@
 
 int	main(int argc, char *argv[], char *env[])
 {
+	int pipefd[2];
+	t_cmd cmd;
+
 	if (!check_arguments(argc) || !check_file(argv[1], 1)
 		|| !check_file(argv[4], 2))
-	{
 		return (FALSE);
-	}
-	char *test = find_command_path(argv[2], env);
-	printf("%s\n", test);
-	free(test);
+	create_pipe(pipefd);
+	cmd.cmd = extract_cmd_name(argv[2]);
+	cmd.cmd_path = find_cmd_path(cmd.cmd, env);
+	cmd.cmd_args = format_cmd(argv[2]);
+	create_process(&cmd, env, pipefd, open(argv[1], O_RDONLY), open(argv[4],
+			O_WRONLY | O_CREAT | O_TRUNC, 0644));
 }

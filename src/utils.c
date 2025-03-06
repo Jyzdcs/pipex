@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:21:34 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/06 16:59:19 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:17:07 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,5 @@ char	**format_cmd(char *cmd)
 void	handle_error(char *message)
 {
 	perror(message);
+	exit(EXIT_FAILURE);
 }
