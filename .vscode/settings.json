@@ -1,6 +1,7 @@
 {
-    "files.associations": {
-        "pipex.h": "c",
-        "stdio.h": "c"
-    }
+  "files.associations": {
+    "pipex.h": "c",
+    "stdio.h": "c",
+    "fcntl.h": "c"
+  }
 }

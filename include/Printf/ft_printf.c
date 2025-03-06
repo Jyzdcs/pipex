@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 13:54:10 by kclaudan          #+#    #+#             */
-/*   Updated: 2024/11/19 21:11:37 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:09:01 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_printf(const char *format, ...)
 	{
 		if (format[i] == '%' && is_format_specifier(format[i + 1]))
 		{
-			format_print(format[i + 1];, &args, &counter);
+			format_print(format[i + 1], &args, &counter);
 			i += 2;
 		}
 		else
@@ -75,7 +75,8 @@ int	ft_printf(const char *format, ...)
 }
 /*
 #include <limits.h>
-int main(int ac, char **argv)
+
+int	main(int ac, char **argv)
 {
 	(void)ac;
 	(void)argv;
