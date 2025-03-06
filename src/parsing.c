@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:41:11 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/06 16:41:49 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:58:19 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*find_command_path(char *cmd, char *env[])
 {
 	char	*path;
 	char	*cmd_path;
+	char	*tmp;
 	char	**paths;
 	int		i;
 
@@ -79,13 +80,15 @@ char	*find_command_path(char *cmd, char *env[])
 	i = 0;
 	while (paths[i])
 	{
-		cmd_path = ft_strjoin(paths[i], "/");
-		cmd_path = ft_strjoin(cmd_path, cmd);
+		tmp = ft_strjoin(paths[i], "/");
+		cmd_path = ft_strjoin(tmp, cmd);
 		if (access(cmd_path, F_OK) == 0)
 		{
 			free_all_ptr((void **)paths);
+			free(tmp);
 			return (cmd_path);
 		}
+		free(tmp);
 		free(cmd_path);
 		i++;
 	}
