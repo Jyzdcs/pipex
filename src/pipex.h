@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:17:13 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/06 19:49:54 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/06 23:53:01 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ char		*get_path(char *env[]);
 
 /* pipex.c : creation du pipe, gestion des child process et exec des cmd */
 void		create_pipe(int pipefd[2]);
-void		create_process(t_cmd *cmd, char *env[], int pipefd[2], int input_fd,
+void		create_process_1(t_cmd *cmd, char *env[], int pipefd[2],
+				int input_fd, int output_fd);
+void		create_process_2(t_cmd *cmd, char *env[], int pipefd[2],
 				int output_fd);
 void		wait_for_processes(int pid1, int pid2);
 

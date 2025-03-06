@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:21:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/06 20:07:38 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/07 00:03:20 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 int	main(int argc, char *argv[], char *env[])
 {
-	int pipefd[2];
-	t_cmd cmd;
+	int		pipefd[2];
+	t_cmd	cmd;
 
 	if (!check_arguments(argc) || !check_file(argv[1], 1)
 		|| !check_file(argv[4], 2))
@@ -35,6 +35,13 @@ int	main(int argc, char *argv[], char *env[])
 	cmd.cmd = extract_cmd_name(argv[2]);
 	cmd.cmd_path = find_cmd_path(cmd.cmd, env);
 	cmd.cmd_args = format_cmd(argv[2]);
-	create_process(&cmd, env, pipefd, open(argv[1], O_RDONLY), open(argv[4],
+	create_process_1(&cmd, env, pipefd, open(argv[1], O_RDONLY), open(argv[4],
 			O_WRONLY | O_CREAT | O_TRUNC, 0644));
+	cmd.cmd = extract_cmd_name(argv[3]);
+	cmd.cmd_path = find_cmd_path(cmd.cmd, env);
+	cmd.cmd_args = format_cmd(argv[3]);
+	create_process_2(&cmd, env, pipefd, open(argv[4],
+			O_WRONLY | O_CREAT | O_APPEND, 0644));
+	close_pipe(pipefd);
+	return (0);
 }

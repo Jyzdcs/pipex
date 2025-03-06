@@ -1,16 +1,3 @@
-total 176
--rw-r--r--@ 1 nax_lyk  staff    107 Mar  6 19:12 infile
--rw-r--r--@ 1 nax_lyk  staff   1778 Mar  6 20:07 main.c
--rw-r--r--@ 1 nax_lyk  staff   1280 Mar  6 20:08 main.o
--rw-r--r--@ 1 nax_lyk  staff    995 Mar  6 17:31 makefile
--rwxr-xr-x@ 1 nax_lyk  staff      0 Mar  6 20:08 outfile
--rw-r--r--@ 1 nax_lyk  staff   2856 Mar  6 20:07 parsing.c
--rw-r--r--@ 1 nax_lyk  staff   2880 Mar  6 20:08 parsing.o
--rwxr-xr-x@ 1 nax_lyk  staff  35096 Mar  6 20:08 pipex
--rw-r--r--@ 1 nax_lyk  staff   1683 Mar  6 18:42 pipex.c
--rw-r--r--@ 1 nax_lyk  staff   1900 Mar  6 19:49 pipex.h
--rw-r--r--@ 1 nax_lyk  staff   1512 Mar  6 20:06 pipex.o
--rw-r--r--@ 1 nax_lyk  staff   1104 Mar  6 15:14 redirections.c
--rw-r--r--@ 1 nax_lyk  staff    624 Mar  6 20:06 redirections.o
--rw-r--r--@ 1 nax_lyk  staff   1266 Mar  6 18:17 utils.c
--rw-r--r--@ 1 nax_lyk  staff    976 Mar  6 20:06 utils.o
+main.c
+main.o
+makefile
