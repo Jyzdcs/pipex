@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:22:50 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/07 00:22:05 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/07 01:07:03 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	create_pipe(int pipefd[2])
 }
 
 /* Fork le premier processus, gère les redirections et appelle execve().*/
-void	create_process_1(t_cmd *cmd, char *env[], int pipefd[2], int input_fd,
-		int output_fd)
+pid_t	create_process_1(t_cmd *cmd, char *env[], int pipefd[2], int input_fd)
 {
 	pid_t	pid;
 
@@ -37,15 +36,11 @@ void	create_process_1(t_cmd *cmd, char *env[], int pipefd[2], int input_fd,
 		execve(cmd->cmd_path, cmd->cmd_args, env);
 		handle_error("Error: execve failed");
 	}
-	else
-	{
-		close(pipefd[1]);
-		wait(NULL);
-	}
+	return (pid);
 }
 
 /*Fork le deuxième processus, gère les redirections et appelle execve().*/
-void	create_process_2(t_cmd *cmd, char *env[], int pipefd[2], int output_fd)
+pid_t	create_process_2(t_cmd *cmd, char *env[], int pipefd[2], int output_fd)
 {
 	pid_t	pid;
 
@@ -62,6 +57,7 @@ void	create_process_2(t_cmd *cmd, char *env[], int pipefd[2], int output_fd)
 		execve(cmd->cmd_path, cmd->cmd_args, env);
 		handle_error("Error: execve failed");
 	}
+	return (pid);
 }
 
 /*Attends la fin des processus enfants et récupère leur statut.*/
