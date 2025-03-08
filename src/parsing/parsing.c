@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:23:56 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:41:09 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_arguments(int argc)
  */
 int	check_file(char *filename, int mode)
 {
-	int fd;
+	int	fd;
 
 	if (mode == 1)
 	{

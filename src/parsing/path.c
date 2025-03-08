@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:26:50 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:52:28 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,59 @@ char	*get_path(char *env[])
 }
 
 /**
+ * @brief Handles the error when PATH is not found
+ *
+ * @param pipex Pipex structure with command details
+ */
+static void	handle_path_error(t_pipex pipex)
+{
+	if (pipex.cmd)
+		free(pipex.cmd);
+	close(pipex.pipefd[1]);
+	close(pipex.pipefd[0]);
+	handle_error("Error: PATH does not exist");
+}
+
+/**
+ * @brief Handles the error when command is not found
+ *
+ * @param pipex Pipex structure with command details
+ */
+static void	handle_cmd_error(t_pipex pipex)
+{
+	if (pipex.cmd)
+		free(pipex.cmd);
+	close(pipex.pipefd[1]);
+	close(pipex.pipefd[0]);
+	handle_error("Error: Command not found");
+}
+
+/**
+ * @brief Creates and checks a command path
+ *
+ * @param dir Directory to check
+ * @param cmd Command name
+ * @return char* Valid command path or NULL
+ */
+static char	*create_and_check_path(char *dir, char *cmd)
+{
+	char	*tmp;
+	char	*cmd_path;
+
+	tmp = ft_strjoin(dir, "/");
+	if (!tmp)
+		return (NULL);
+	cmd_path = ft_strjoin(tmp, cmd);
+	free(tmp);
+	if (!cmd_path)
+		return (NULL);
+	if (access(cmd_path, F_OK | X_OK) == 0)
+		return (cmd_path);
+	free(cmd_path);
+	return (NULL);
+}
+
+/**
  * @brief Tries to find a command path in all possible directories
  *
  * @param paths Array of path directories
@@ -41,26 +94,26 @@ char	*get_path(char *env[])
  */
 static char	*try_paths(char **paths, char *cmd)
 {
-	char	*tmp;
 	char	*cmd_path;
 	int		i;
+	char	*result;
 
 	i = 0;
+	result = NULL;
+	if (!paths || !cmd)
+		return (NULL);
 	while (paths[i])
 	{
-		tmp = ft_strjoin(paths[i], "/");
-		cmd_path = ft_strjoin(tmp, cmd);
-		if (access(cmd_path, F_OK) == 0)
+		cmd_path = create_and_check_path(paths[i], cmd);
+		if (cmd_path)
 		{
-			free_all_ptr((void **)paths);
-			free(tmp);
-			return (cmd_path);
+			result = cmd_path;
+			break ;
 		}
-		free(tmp);
-		free(cmd_path);
 		i++;
 	}
-	return (NULL);
+	free_all_ptr((void **)paths);
+	return (result);
 }
 
 /**
@@ -76,13 +129,12 @@ char	*find_cmd_path(t_pipex pipex, char *env[])
 	char	*cmd_path;
 	char	**paths;
 
+	if (!env)
+		return (NULL);
 	path = get_path(env);
 	if (!path)
 	{
-		free(pipex.cmd);
-		close(pipex.pipefd[1]);
-		close(pipex.pipefd[0]);
-		handle_error("Error: PATH does not exist");
+		handle_path_error(pipex);
 		return (NULL);
 	}
 	paths = ft_split(path, ':');
@@ -91,11 +143,7 @@ char	*find_cmd_path(t_pipex pipex, char *env[])
 	cmd_path = try_paths(paths, pipex.cmd);
 	if (!cmd_path)
 	{
-		free_all_ptr((void **)paths);
-		free(pipex.cmd);
-		close(pipex.pipefd[1]);
-		close(pipex.pipefd[0]);
-		handle_error("Error: Command not found");
+		handle_cmd_error(pipex);
 		return (NULL);
 	}
 	return (cmd_path);

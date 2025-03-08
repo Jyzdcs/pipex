@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:23:56 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:40:44 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ char	**format_cmd(char *cmd)
  */
 char	*extract_cmd_name(char *cmd)
 {
-	int i;
-	char *cmd_name;
+	int		i;
+	char	*cmd_name;
 
 	i = 0;
 	while (cmd[i] && cmd[i] != ' ')
