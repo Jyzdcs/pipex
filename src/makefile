@@ -1,6 +1,6 @@
 NAME = pipex
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 # Paths to libraries
 LIBFT_DIR = ../include/libft
@@ -9,11 +9,27 @@ PRINTF_DIR = ../include/Printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
 # Source files and object files
-SRC = main.c utils.c pipex.c redirections.c parsing.c
+SRC_DIR = .
+CMD_DIR = cmd
+PARSING_DIR = parsing
+PROCESS_DIR = process
+REDIR_DIR = redirections
+UTILS_DIR = utils
+
+# Source files
+SRC = $(SRC_DIR)/main.c \
+	$(CMD_DIR)/command.c \
+	$(PARSING_DIR)/parsing.c \
+	$(PARSING_DIR)/path.c \
+	$(PROCESS_DIR)/process.c \
+	$(REDIR_DIR)/redirections.c \
+	$(UTILS_DIR)/utils.c
+
+# Object files
 OBJ = $(SRC:.c=.o)
 
 # Include paths for header files
-INCLUDES = -I$(LIBFT_DIR) -I$(PRINTF_DIR)
+INCLUDES = -I$(LIBFT_DIR) -I$(PRINTF_DIR) -I$(SRC_DIR)
 
 all: $(NAME)
 
@@ -26,8 +42,8 @@ $(PRINTF):
 	$(MAKE) -C $(PRINTF_DIR)
 
 # Dependency rules for object files
-%.o: %.c pipex.h
-	$(CC) $(INCLUDES) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Build the final executable, depends on objects and libraries
 $(NAME): $(LIBFT) $(PRINTF) $(OBJ)
