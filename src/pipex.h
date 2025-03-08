@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:17:13 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:28:47 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:29:11 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,6 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-// /**
-//  * @brief Structure to hold pipeline information
-//  */
-// typedef struct s_pipex
-// {
-// 	char	*cmd;
-// 	char	*cmd_path;
-// 	char	**cmd_args;
-// 	int		pipefd[2];
-// }			t_pipex;
 
 /* Utils.c : utils */
 void	handle_error(char *message);

@@ -6,11 +6,25 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:41:09 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:26:49 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+/**
+ * @brief Handles the error when command is not found
+ *
+ * @param pipex Pipex structure with command details
+ */
+void	handle_cmd_error(t_pipex pipex)
+{
+	if (pipex.cmd)
+		free(pipex.cmd);
+	close(pipex.pipefd[1]);
+	close(pipex.pipefd[0]);
+	handle_error("Error: Command not found");
+}
 
 /**
  * @brief Checks if the program has the correct number of arguments

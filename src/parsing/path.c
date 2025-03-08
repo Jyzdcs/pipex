@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:52:28 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:21:53 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,6 @@ static void	handle_path_error(t_pipex pipex)
 	close(pipex.pipefd[1]);
 	close(pipex.pipefd[0]);
 	handle_error("Error: PATH does not exist");
-}
-
-/**
- * @brief Handles the error when command is not found
- *
- * @param pipex Pipex structure with command details
- */
-static void	handle_cmd_error(t_pipex pipex)
-{
-	if (pipex.cmd)
-		free(pipex.cmd);
-	close(pipex.pipefd[1]);
-	close(pipex.pipefd[0]);
-	handle_error("Error: Command not found");
 }
 
 /**

@@ -6,22 +6,11 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:21:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:26:42 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:13:33 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-/*
-- Vérification des arguments dans main() via check_arguments().
-- Vérification des fichiers et des commandes avec check_file() et find_command_path().
-- Création des pipes dans pipex.c avec create_pipe().
-- Fork des processus enfants et redirections via create_process(),
-	puis attente des processus avec wait_for_processes().
-- Gestion des redirections et fermeture des pipes dans redirections.c.
-*/
-
-#include <stdio.h>
 
 /**
  * @brief Cleans up resources for the first command
@@ -49,6 +38,20 @@ static void	cleanup_second_command(t_pipex *pipex)
 	close(pipex->pipefd[0]);
 }
 
+int	contain_path(char *argv2)
+{
+	int	i;
+
+	i = 0;
+	while (argv2[i] != ' ' && argv2[i])
+	{
+		if (argv2[i] == '/')
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
+
 /**
  * @brief Sets up the first command
  *
@@ -60,7 +63,27 @@ static void	cleanup_second_command(t_pipex *pipex)
 static int	setup_first_command(t_pipex *pipex, char *argv[], char *env[])
 {
 	int	fd;
+	char	**tmp;
+	char	*tmp1;
 
+	if (contain_path(argv[2]))
+	{
+		tmp = ft_split(argv[2], '/');
+		int i = 0;
+		while (tmp[i + 1])
+		{
+			tmp1 = ft_strjoin("/", tmp[i]);
+			pipex->cmd_path = ft_strjoin(pipex->cmd_path, tmp1);
+			free(tmp1);
+			i++;
+		}
+		pipex->cmd = extract_cmd_name(tmp[i]);
+		pipex->cmd_args = format_cmd(tmp[i]);
+		printf("%s\n", pipex->cmd);
+		printf("%s\n", pipex->cmd_path);
+		free_all_ptr((void **)tmp);
+		return (open(argv[1], O_RDONLY));
+	}
 	pipex->cmd = extract_cmd_name(argv[2]);
 	pipex->cmd_path = find_cmd_path(*pipex, env);
 	pipex->cmd_args = format_cmd(argv[2]);

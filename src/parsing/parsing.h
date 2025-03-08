@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 15:26:09 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 17:29:19 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ typedef struct s_pipex
 	char	**cmd_args;
 	int		pipefd[2];
 }			t_pipex;
+
+/**
+ * @brief Handles the error when command is not found
+ *
+ * @param pipex Pipex structure with command details
+ */
+void		handle_cmd_error(t_pipex pipex);
 
 /**
  * @brief Checks if the program has the correct number of arguments
