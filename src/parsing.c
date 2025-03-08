@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:41:11 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 01:23:55 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 01:34:19 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,10 @@ char	*find_cmd_path(t_pipex pipex, char *env[])
 		i++;
 	}
 	free_all_ptr((void **)paths);
+	free(pipex.cmd);
+	close(pipex.pipefd[1]);
+	close(pipex.pipefd[0]);
+	handle_error("Error: Command not found");
 	return (NULL);
 }
 
