@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:41:11 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/06 20:07:35 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 01:23:55 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,11 @@ char	*get_path(char *env[])
 			return (env[i] + 5);
 		i++;
 	}
-	handle_error("Error: PATH does not exist");
 	return (NULL);
 }
 
 /*Cherche le chemin d'une commande à partir du PATH.*/
-char	*find_cmd_path(char *cmd, char *env[])
+char	*find_cmd_path(t_pipex pipex, char *env[])
 {
 	char	*path;
 	char	*cmd_path;
@@ -76,7 +75,13 @@ char	*find_cmd_path(char *cmd, char *env[])
 
 	path = get_path(env);
 	if (!path)
+	{
+		free(pipex.cmd);
+		close(pipex.pipefd[1]);
+		close(pipex.pipefd[0]);
+		handle_error("Error: PATH does not exist");
 		return (NULL);
+	}
 	paths = ft_split(path, ':');
 	if (!paths)
 		return (NULL);
@@ -84,7 +89,7 @@ char	*find_cmd_path(char *cmd, char *env[])
 	while (paths[i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
-		cmd_path = ft_strjoin(tmp, cmd);
+		cmd_path = ft_strjoin(tmp, pipex.cmd);
 		if (access(cmd_path, F_OK) == 0)
 		{
 			free_all_ptr((void **)paths);
@@ -96,7 +101,6 @@ char	*find_cmd_path(char *cmd, char *env[])
 		i++;
 	}
 	free_all_ptr((void **)paths);
-	handle_error("Error: Command not found");
 	return (NULL);
 }
 
