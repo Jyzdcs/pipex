@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 17:29:19 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:39:34 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSING_H
 
 # include "../../include/libft/libft.h"
+# include "../cmd/command.h"
 # include "../utils/utils.h"
 # include <fcntl.h>
 # include <stdio.h>
@@ -71,5 +72,22 @@ char		*get_path(char *env[]);
  * @return char* Full path to command or NULL if not found
  */
 char		*find_cmd_path(t_pipex pipex, char *env[]);
+
+/**
+ * @brief Vérifie si la commande contient un chemin absolu
+ *
+ * @param cmd Chaîne de caractères contenant la commande
+ * @return int TRUE si c'est un chemin absolu, FALSE sinon
+ */
+int			is_absolute_path(char *cmd);
+
+/**
+ * @brief Extrait le chemin et la commande d'un chemin absolu
+ *
+ * @param abs_path Chaîne contenant le chemin absolu et la commande
+ * @param pipex Structure où stocker les infos extraites
+ * @return int TRUE si l'extraction a réussi, FALSE sinon
+ */
+int			process_absolute_path(char *abs_path, t_pipex *pipex);
 
 #endif

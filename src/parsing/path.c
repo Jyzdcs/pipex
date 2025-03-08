@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 17:21:53 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:34:06 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,6 @@ char	*get_path(char *env[])
 		i++;
 	}
 	return (NULL);
-}
-
-/**
- * @brief Handles the error when PATH is not found
- *
- * @param pipex Pipex structure with command details
- */
-static void	handle_path_error(t_pipex pipex)
-{
-	if (pipex.cmd)
-		free(pipex.cmd);
-	close(pipex.pipefd[1]);
-	close(pipex.pipefd[0]);
-	handle_error("Error: PATH does not exist");
 }
 
 /**
@@ -103,6 +89,21 @@ static char	*try_paths(char **paths, char *cmd)
 }
 
 /**
+ * @brief Handles errors when command path can't be found
+ *
+ * @param pipex Structure with command details
+ * @param error_msg Error message to display
+ */
+static void	handle_cmd_path_error(t_pipex pipex, char *error_msg)
+{
+	if (pipex.cmd)
+		free(pipex.cmd);
+	close(pipex.pipefd[1]);
+	close(pipex.pipefd[0]);
+	handle_error(error_msg);
+}
+
+/**
  * @brief Finds the full path to a command
  *
  * @param pipex Pipex structure with command details
@@ -115,12 +116,12 @@ char	*find_cmd_path(t_pipex pipex, char *env[])
 	char	*cmd_path;
 	char	**paths;
 
-	if (!env)
+	if (!env || !pipex.cmd)
 		return (NULL);
 	path = get_path(env);
 	if (!path)
 	{
-		handle_path_error(pipex);
+		handle_cmd_path_error(pipex, "Error: PATH does not exist");
 		return (NULL);
 	}
 	paths = ft_split(path, ':');
@@ -129,7 +130,7 @@ char	*find_cmd_path(t_pipex pipex, char *env[])
 	cmd_path = try_paths(paths, pipex.cmd);
 	if (!cmd_path)
 	{
-		handle_cmd_error(pipex);
+		handle_cmd_path_error(pipex, "Error: Command not found");
 		return (NULL);
 	}
 	return (cmd_path);

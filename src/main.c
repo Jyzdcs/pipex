@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:21:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 19:13:33 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:31:44 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,6 @@ static void	cleanup_second_command(t_pipex *pipex)
 	close(pipex->pipefd[0]);
 }
 
-int	contain_path(char *argv2)
-{
-	int	i;
-
-	i = 0;
-	while (argv2[i] != ' ' && argv2[i])
-	{
-		if (argv2[i] == '/')
-			return (TRUE);
-		i++;
-	}
-	return (FALSE);
-}
-
 /**
  * @brief Sets up the first command
  *
@@ -63,31 +49,24 @@ int	contain_path(char *argv2)
 static int	setup_first_command(t_pipex *pipex, char *argv[], char *env[])
 {
 	int	fd;
-	char	**tmp;
-	char	*tmp1;
 
-	if (contain_path(argv[2]))
-	{
-		tmp = ft_split(argv[2], '/');
-		int i = 0;
-		while (tmp[i + 1])
-		{
-			tmp1 = ft_strjoin("/", tmp[i]);
-			pipex->cmd_path = ft_strjoin(pipex->cmd_path, tmp1);
-			free(tmp1);
-			i++;
-		}
-		pipex->cmd = extract_cmd_name(tmp[i]);
-		pipex->cmd_args = format_cmd(tmp[i]);
-		printf("%s\n", pipex->cmd);
-		printf("%s\n", pipex->cmd_path);
-		free_all_ptr((void **)tmp);
-		return (open(argv[1], O_RDONLY));
-	}
-	pipex->cmd = extract_cmd_name(argv[2]);
-	pipex->cmd_path = find_cmd_path(*pipex, env);
-	pipex->cmd_args = format_cmd(argv[2]);
 	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		handle_error("Error: Cannot open input file");
+	pipex->cmd_path = NULL;
+	if (is_absolute_path(argv[2]))
+	{
+		if (!process_absolute_path(argv[2], pipex))
+			handle_error("Error: Invalid absolute path");
+		if (access(pipex->cmd_path, F_OK | X_OK) == -1)
+			handle_error("Error: Command not found or not executable");
+	}
+	else
+	{
+		pipex->cmd = extract_cmd_name(argv[2]);
+		pipex->cmd_path = find_cmd_path(*pipex, env);
+		pipex->cmd_args = format_cmd(argv[2]);
+	}
 	return (fd);
 }
 
@@ -103,10 +82,23 @@ static int	setup_second_command(t_pipex *pipex, char *argv[], char *env[])
 {
 	int	fd;
 
-	pipex->cmd = extract_cmd_name(argv[3]);
-	pipex->cmd_path = find_cmd_path(*pipex, env);
-	pipex->cmd_args = format_cmd(argv[3]);
 	fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		handle_error("Error: Cannot open or create output file");
+	pipex->cmd_path = NULL;
+	if (is_absolute_path(argv[3]))
+	{
+		if (!process_absolute_path(argv[3], pipex))
+			handle_error("Error: Invalid absolute path");
+		if (access(pipex->cmd_path, F_OK | X_OK) == -1)
+			handle_error("Error: Command not found or not executable");
+	}
+	else
+	{
+		pipex->cmd = extract_cmd_name(argv[3]);
+		pipex->cmd_path = find_cmd_path(*pipex, env);
+		pipex->cmd_args = format_cmd(argv[3]);
+	}
 	return (fd);
 }
 
