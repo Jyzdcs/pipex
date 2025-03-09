@@ -1,0 +1,12 @@
+cmd
+infile
+main.c
+main.o
+makefile
+outfile
+parsing
+pipex
+pipex.h
+process
+redirections
+utils

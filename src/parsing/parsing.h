@@ -6,7 +6,7 @@
 /*   By: kclaudan <kclaudan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 15:00:00 by kclaudan          #+#    #+#             */
-/*   Updated: 2025/03/08 19:39:34 by kclaudan         ###   ########.fr       */
+/*   Updated: 2025/03/09 23:50:35 by kclaudan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,46 @@ int			is_absolute_path(char *cmd);
  * @return int TRUE si l'extraction a réussi, FALSE sinon
  */
 int			process_absolute_path(char *abs_path, t_pipex *pipex);
+
+/**
+ * @brief Initialise les champs de la structure pipex
+ *
+ * @param pipex Structure à initialiser
+ */
+void		init_pipex_fields(t_pipex *pipex);
+
+/**
+ * @brief Configure la commande avec un chemin absolu
+ *
+ * @param pipex Structure pipex
+ * @param cmd_path Chemin de la commande
+ * @return int Statut de succès (1) ou d'échec (0)
+ */
+int			setup_absolute_cmd(t_pipex *pipex, char *cmd_path);
+
+/**
+ * @brief Configure la commande avec un chemin relatif
+ *
+ * @param pipex Structure pipex
+ * @param cmd_str Chaîne de commande
+ * @param env Variables d'environnement
+ */
+void		setup_relative_cmd(t_pipex *pipex, char *cmd_str, char *env[]);
+
+/**
+ * @brief Ouvre un fichier d'entrée pour la redirection
+ *
+ * @param filename Nom du fichier à ouvrir
+ * @return int Descripteur de fichier ou erreur
+ */
+int			open_input_file(char *filename);
+
+/**
+ * @brief Ouvre un fichier de sortie pour la redirection
+ *
+ * @param filename Nom du fichier à ouvrir/créer
+ * @return int Descripteur de fichier ou erreur
+ */
+int			open_output_file(char *filename);
 
 #endif

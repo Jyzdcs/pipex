@@ -22,6 +22,7 @@ SRC = $(SRC_DIR)/main.c \
 	$(PARSING_DIR)/parsing.c \
 	$(PARSING_DIR)/path.c \
 	$(PARSING_DIR)/absolute_path.c \
+	$(PARSING_DIR)/cmd_setup.c \
 	$(PROCESS_DIR)/process.c \
 	$(REDIR_DIR)/redirections.c \
 	$(UTILS_DIR)/utils.c
